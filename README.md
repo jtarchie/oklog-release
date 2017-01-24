@@ -7,5 +7,5 @@ This is a bosh release for [oklog](https://github.com/oklog/oklog) service.
 Assuming you have a fresh [bosh-lite](https://github.com/cloudfoundry/bosh-lite) aliased to `lite`.
 
 ```bash
-./bosh-lite/run.sh
+./manifests/run.sh
 ```
