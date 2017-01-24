@@ -1,0 +1,51 @@
+---
+name: oklog-store
+
+templates:
+  ctl.erb: bin/ctl
+
+packages:
+- oklog
+
+consumes:
+- name: oklog-store
+  type: oklog-store
+
+provides:
+- name: oklog-store
+  type: oklog-store
+
+properties:
+  api:
+    description: "listen address for store API"
+    default: "tcp://0.0.0.0:7650"
+  cluster:
+    description: "listen address for cluster"
+    default: "tcp://0.0.0.0:7659"
+  filesystem:
+    description: "real, real-nmap, virtual, nop"
+    default: "real"
+  store.path:
+    description: "path holding segment files for store tier"
+    default: "/var/vcap/data/oklog-store/data"
+  store.segment-buffer-size:
+    description: "per-segment in-memory read buffer during queries"
+    default: "1048576"
+  store.segment-consumers:
+    description: "concurrent segment consumers"
+    default: "1"
+  store.segment-purge:
+    description: "purge dleted segment files after this long"
+    default: "24h0m0s"
+  store.segment-replication-factor:
+    description: "how many copies of each segment to replicate"
+    default: "2"
+  store.segment-retain:
+    description: "retention period for segment files"
+    default: "168h0m0s"
+  store.segment-target-age:
+    description: "replicate once the aggregate segment is this old"
+    default: "3s"
+  store.segment-target-size:
+    description: "try to keep store segments about this size"
+    default: "134217728"

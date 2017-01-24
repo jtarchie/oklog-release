@@ -1,0 +1,48 @@
+---
+name: oklog-ingest
+
+templates:
+  ctl.erb: bin/ctl
+
+packages:
+- oklog
+
+consumes:
+- name: oklog-ingest
+  type: oklog-ingest
+
+provides:
+- name: oklog-ingest
+  type: oklog-ingest
+
+properties:
+  api:
+    description: "listen address for ingest API"
+    default: "tcp://0.0.0.0:7650"
+  cluster:
+    description: "listen address for cluster"
+    default: "tcp://0.0.0.0:7659"
+  filesystem:
+    description: "real, real-nmap, virtual, nop"
+    default: "real"
+  ingest.bulk:
+    description: "listen address for bulk (whole-segment) writes"
+    default: "tcp://0.0.0.0:7653"
+  ingest.durable:
+    description: "listen address for durable (sync) writes"
+    default: "tcp://0.0.0.0:7652"
+  ingest.fast:
+    description: "listen address for fast (async) writes"
+    default: "tcp://0.0.0.0:7651"
+  ingest.path:
+    description: "path holding segment files for ingest tier"
+    default: "/var/vcap/data/oklog-ingest/data"
+  ingest.segment-flush-age:
+    description: "flush sgements after they are active for this long"
+    default: "3s"
+  ingest.segment-flush-size:
+    description: "flush segments after they grow to this size"
+    default: "16777216"
+  ingest.segment-pending-timeout:
+    description: "claimed bit uncommited pending segments are failed after this long"
+    default: "1m0s"

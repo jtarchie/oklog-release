@@ -1,0 +1,5 @@
+check process oklog-forward
+  with pidfile /var/vcap/sys/run/oklog-forward/oklog.pid
+  start program "/var/vcap/jobs/oklog-forward/bin/ctl start"
+  stop program "/var/vcap/jobs/oklog-forward/bin/ctl stop"
+  group vcap

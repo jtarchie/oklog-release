@@ -1,0 +1,5 @@
+check process oklog-ingest
+  with pidfile /var/vcap/sys/run/oklog-ingest/oklog.pid
+  start program "/var/vcap/jobs/oklog-ingest/bin/ctl start"
+  stop program "/var/vcap/jobs/oklog-ingest/bin/ctl stop"
+  group vcap

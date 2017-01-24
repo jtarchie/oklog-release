@@ -1,0 +1,8 @@
+---
+name: oklog
+
+dependencies: []
+
+files:
+- pid_utils.sh
+- oklog-0.1.2-linux-amd64

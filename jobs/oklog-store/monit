@@ -1,0 +1,5 @@
+check process oklog-store
+  with pidfile /var/vcap/sys/run/oklog-store/oklog.pid
+  start program "/var/vcap/jobs/oklog-store/bin/ctl start"
+  stop program "/var/vcap/jobs/oklog-store/bin/ctl stop"
+  group vcap

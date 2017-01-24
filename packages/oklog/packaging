@@ -1,0 +1,8 @@
+set -ex
+
+target=${BOSH_INSTALL_TARGET}/oklog
+
+cp oklog-0.1.2-linux-amd64 $target
+chmod +x $target
+
+cp pid_utils.sh ${BOSH_INSTALL_TARGET}

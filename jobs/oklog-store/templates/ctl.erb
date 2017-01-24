@@ -1,0 +1,54 @@
+#!/bin/bash -e
+
+
+RUN_DIR=/var/vcap/sys/run/oklog-store
+LOG_DIR=/var/vcap/sys/log/oklog-store
+PIDFILE=$RUN_DIR/oklog.pid
+
+
+source /var/vcap/packages/oklog/pid_utils.sh
+
+case $1 in
+  start)
+    pid_guard $PIDFILE "oklog-store"
+
+    mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
+    mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    store_path=$(dirname "<%= p("store.path") %>")
+    mkdir -p $store_path
+    chown -R vcap:vcap $store_path
+
+    echo $$ > $PIDFILE
+
+    <% peers = link("oklog-store").instances.select{|instance| spec.id != instance.id} %>
+    exec chpst -u vcap:vcap /var/vcap/packages/oklog/oklog store \
+      -api <%= p("api") %> \
+      -cluster <%= p("cluster") %> \
+      -filesystem <%= p("filesystem") %> \
+      -store.path <%= p("store.path") %> \
+      -store.segment-buffer-size <%= p("store.segment-buffer-size") %> \
+      -store.segment-consumers <%= p("store.segment-consumers") %> \
+      -store.segment-purge <%= p("store.segment-purge") %> \
+      -store.segment-replication-factor <%= p("store.segment-replication-factor") %> \
+      -store.segment-retain <%= p("store.segment-retain") %> \
+      -store.segment-target-age <%= p("store.segment-target-age") %> \
+      -store.segment-target-size <%= p("store.segment-target-size") %> \
+      <% peers.each do |peer| %> -peer <%= instance.address %> <% end %>
+
+    ;;
+
+  stop)
+    kill_and_wait $PID_FILE
+
+    ;;
+
+  *)
+    echo "Usage $0 (start|stop)"
+
+    ;;
+
+esac

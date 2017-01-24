@@ -1,0 +1,53 @@
+#!/bin/bash -e
+
+
+RUN_DIR=/var/vcap/sys/run/oklog-ingest
+LOG_DIR=/var/vcap/sys/log/oklog-ingest
+PIDFILE=$RUN_DIR/oklog.pid
+
+
+source /var/vcap/packages/oklog/pid_utils.sh
+
+case $1 in
+  start)
+    pid_guard $PIDFILE "oklog-ingest"
+
+    mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
+    mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    ingest_path=$(dirname "<%= p("ingest.path") %>")
+    mkdir -p $ingest_path
+    chown -R vcap:vcap $ingest_path
+
+    echo $$ > $PIDFILE
+
+    <% peers = link("oklog-ingest").instances.select{|instance| spec.id != instance.id} %>
+    exec chpst -u vcap:vcap /var/vcap/packages/oklog/oklog ingest \
+      -api <%= p("api") %> \
+      -cluster <%= p("cluster") %> \
+      -filesystem <%= p("filesystem") %> \
+      -ingest.bulk <%= p("ingest.bulk") %> \
+      -ingest.durable <%= p("ingest.durable") %> \
+      -ingest.fast <%= p("ingest.fast") %> \
+      -ingest.path <%= p("ingest.path") %> \
+      -ingest.segment-flush-age <%= p("ingest.segment-flush-age") %> \
+      -ingest.segment-flush-size <%= p("ingest.segment-flush-size") %> \
+      -ingest.segment-pending-timeout <%= p("ingest.segment-pending-timeout") %> \
+      <% peers.each do |peer| %> -peer <%= instance.address %> <% end %>
+
+    ;;
+
+  stop)
+    kill_and_wait $PID_FILE
+
+    ;;
+
+  *)
+    echo "Usage $0 (start|stop)"
+
+    ;;
+
+esac

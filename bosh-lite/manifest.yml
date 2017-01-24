@@ -1,0 +1,51 @@
+name: oklog
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+releases:
+- name: oklog
+  version: latest
+
+instance_groups:
+- name: ingest
+  azs: [ z1 ]
+  instances: 1
+  persistent_disk_type: 1GB
+  vm_type: m3.medium
+  networks:
+  - name: private
+  stemcell: default
+  jobs:
+  - name: oklog-ingest
+    release: oklog
+- name: store
+  azs: [ z1 ]
+  instances: 1
+  persistent_disk_type: 1GB
+  vm_type: m3.medium
+  networks:
+  - name: private
+  stemcell: default
+  jobs:
+  - name: oklog-store
+    release: oklog
+- name: forward
+  azs: [ z1 ]
+  instances: 1
+  persistent_disk_type: 1GB
+  vm_type: m3.medium
+  networks:
+  - name: private
+  stemcell: default
+  jobs:
+  - name: oklog-forward
+    release: oklog
+update:
+  canaries: 10
+  canary_watch_time: 60
+  max_in_flight: 10
+  serial: true
+  update_watch_time: 60
