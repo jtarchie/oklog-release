@@ -12,7 +12,7 @@ releases:
 instance_groups:
 - name: ingest
   azs: [ z1 ]
-  instances: 1
+  instances: 2
   persistent_disk_type: 1GB
   vm_type: m3.medium
   networks:
@@ -23,7 +23,7 @@ instance_groups:
     release: oklog
 - name: store
   azs: [ z1 ]
-  instances: 1
+  instances: 2
   persistent_disk_type: 1GB
   vm_type: m3.medium
   networks:
@@ -34,7 +34,7 @@ instance_groups:
     release: oklog
 - name: forward
   azs: [ z1 ]
-  instances: 1
+  instances: 0
   persistent_disk_type: 1GB
   vm_type: m3.medium
   networks:
