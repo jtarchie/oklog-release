@@ -21,10 +21,11 @@ case $1 in
     echo $$ > $PIDFILE
 
     <% ingestors = link("oklog-ingest").instances %>
-    # heartbeat provides a stdin that can be read from, otherwise 
+    # heartbeat provides a stdin that can be read from, otherwise
     exec chpst -u vcap:vcap bash -c "(while sleep 1; do echo "Heartbeat"; done) | /var/vcap/packages/oklog/oklog forward \
-      -api <%= p("api") %> \
-      <% ingestors.each do |i| %> <%= i.address %> <% end %>"
+      -api <%= p("api") %> <% ingestors.each do |i| %> <%= i.address %> <% end %>" \
+      1>>$LOG_DIR/oklog.stdout.log \
+      2>>$LOG_DIR/oklog.stderr.log
 
     ;;
 

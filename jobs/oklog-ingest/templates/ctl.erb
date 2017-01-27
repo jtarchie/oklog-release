@@ -25,6 +25,7 @@ case $1 in
     echo $$ > $PIDFILE
 
     <% peers = link("oklog-ingest").instances.select{|instance| spec.id != instance.id} %>
+    <% peers += link("oklog-store").instances %>
     exec chpst -u vcap:vcap /var/vcap/packages/oklog/oklog ingest \
       -api <%= p("api") %> \
       -cluster <%= p("cluster") %> \
@@ -36,7 +37,9 @@ case $1 in
       -ingest.segment-flush-age <%= p("ingest.segment-flush-age") %> \
       -ingest.segment-flush-size <%= p("ingest.segment-flush-size") %> \
       -ingest.segment-pending-timeout <%= p("ingest.segment-pending-timeout") %> \
-      <% peers.each do |peer| %> -peer <%= instance.address %> <% end %>
+      <% peers.each do |peer| %> -peer <%= peer.address %> <% end %> \
+      1>>$LOG_DIR/oklog.stdout.log \
+      2>>$LOG_DIR/oklog.stderr.log
 
     ;;
 

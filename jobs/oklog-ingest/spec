@@ -10,6 +10,8 @@ packages:
 consumes:
 - name: oklog-ingest
   type: oklog-ingest
+- name: oklog-store
+  type: oklog-store
 
 provides:
 - name: oklog-ingest
