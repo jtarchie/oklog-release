@@ -1,5 +1,10 @@
 #!/bin/bash -e
 
+<%
+def address(port)
+    "tcp://#{spec.address}:#{p(port)}"
+end
+%>
 
 RUN_DIR=/var/vcap/sys/run/oklog-store
 LOG_DIR=/var/vcap/sys/log/oklog-store
@@ -27,8 +32,8 @@ case $1 in
     <% peers = link("oklog-store").instances.select{|instance| spec.id != instance.id} %>
     <% peers += link("oklog-ingest").instances %>
     exec chpst -u vcap:vcap /var/vcap/packages/oklog/oklog store \
-      -api <%= p("api") %> \
-      -cluster <%= p("cluster") %> \
+      -api <%= address("api.port") %> \
+      -cluster <%= address("cluster.port") %> \
       -filesystem <%= p("filesystem") %> \
       -store.path <%= p("store.path") %> \
       -store.segment-buffer-size <%= p("store.segment-buffer-size") %> \

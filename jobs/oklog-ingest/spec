@@ -18,24 +18,24 @@ provides:
   type: oklog-ingest
 
 properties:
-  api:
-    description: "listen address for ingest API"
-    default: "tcp://0.0.0.0:7650"
-  cluster:
+  api.port:
+    description: "listen port for ingest API"
+    default: "7650"
+  cluster.port:
     description: "listen address for cluster"
-    default: "tcp://0.0.0.0:7659"
+    default: "7659"
   filesystem:
     description: "real, real-nmap, virtual, nop"
     default: "real"
-  ingest.bulk:
+  ingest.bulk.port:
     description: "listen address for bulk (whole-segment) writes"
-    default: "tcp://0.0.0.0:7653"
-  ingest.durable:
+    default: "7653"
+  ingest.durable.port:
     description: "listen address for durable (sync) writes"
-    default: "tcp://0.0.0.0:7652"
-  ingest.fast:
+    default: "7652"
+  ingest.fast.port:
     description: "listen address for fast (async) writes"
-    default: "tcp://0.0.0.0:7651"
+    default: "7651"
   ingest.path:
     description: "path holding segment files for ingest tier"
     default: "/var/vcap/data/oklog-ingest/data"

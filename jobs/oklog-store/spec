@@ -18,12 +18,12 @@ provides:
   type: oklog-store
 
 properties:
-  api:
+  api.port:
     description: "listen address for store API"
-    default: "tcp://0.0.0.0:7650"
-  cluster:
+    default: "7650"
+  cluster.port:
     description: "listen address for cluster"
-    default: "tcp://0.0.0.0:7659"
+    default: "7659"
   filesystem:
     description: "real, real-nmap, virtual, nop"
     default: "real"
